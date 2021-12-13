@@ -17,6 +17,9 @@ public class Client : MonoBehaviour
     public int localID = 0;
     public TCP tcp;
 
+    private delegate void PacketHandler(Packet packet);
+    private static Dictionary<int, PacketHandler> packetHandlers;
+
     private void Awake()
     {
         if (Instance == null)
@@ -37,6 +40,7 @@ public class Client : MonoBehaviour
 
     public void ConnectToServer()
     {
+        InitClientData();
         tcp.Connect();
     }
 
@@ -45,6 +49,7 @@ public class Client : MonoBehaviour
         public TcpClient socket;
 
         private NetworkStream stream;
+        private Packet receivedData;
         private byte[] receiveBuffer;
 
 
@@ -69,8 +74,26 @@ public class Client : MonoBehaviour
 
             stream = socket.GetStream();
 
+            receivedData = new Packet();
+
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         }
+
+        public void SendData(Packet packet)
+        {
+            try
+            {
+                if(socket != null)
+                {
+                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.Log($"Error sending data to server via TCP: {e}");
+                throw;
+            }
+        } 
 
         private void ReceiveCallback(IAsyncResult result)
         {
@@ -86,7 +109,7 @@ public class Client : MonoBehaviour
                 byte[] _data = new byte[_byteLenght];
                 Array.Copy(receiveBuffer, _data, _byteLenght);
 
-                //TODO: Handle data
+                receivedData.Reset(HandleData(_data));
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
             }
             catch (Exception e)
@@ -95,5 +118,65 @@ public class Client : MonoBehaviour
                 // TODO: disconnect
             }
         }
+
+        private bool HandleData(byte[] data)
+        {
+            int packetLenght = 0;
+
+            receivedData.SetBytes(data);
+
+            if (receivedData.UnreadLength() >= 4)
+            {
+                packetLenght = receivedData.ReadInt();
+
+                if (packetLenght <= 0)
+                {
+                    return true;
+                }
+            }
+
+            while (packetLenght > 0 && packetLenght <= receivedData.UnreadLength())
+            {
+                byte[] packetBytes = receivedData.ReadBytes(packetLenght);
+
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
+                    using (Packet packet = new Packet(packetBytes))
+                    {
+                        int packetID = packet.ReadInt();
+                        packetHandlers[packetID](packet);
+                    }
+                });
+
+                packetLenght = 0;
+                if (receivedData.UnreadLength() >= 4)
+                {
+                    packetLenght = receivedData.ReadInt();
+
+                    if (packetLenght <= 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if(packetLenght <= 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    private void InitClientData()
+    {
+        packetHandlers = new Dictionary<int, PacketHandler>()
+        {
+            { (int)ServerPackets.Welcome, ClientHandle.Welcome }
+        };
+
+        Debug.Log("Initialized packets.");
     }
 }
+

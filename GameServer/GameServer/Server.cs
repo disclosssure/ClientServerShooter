@@ -7,9 +7,13 @@ namespace GameServer
 {
     public class Server
     {
-        public static int MaxPlayers { get; private set; }
         public static int Port { get; private set; }
-        public static Dictionary<int, Client> Clients = new Dictionary<int, Client>();
+        
+        public static int MaxPlayers { get; private set; }
+        public static Dictionary<int, Client> Clients = new();
+
+        public delegate void PacketHandler(int fromClient, Packet packet);
+        public static Dictionary<int, PacketHandler> packetHandlers;
 
         private static TcpListener _tcpListener { get; set; }
 
@@ -40,7 +44,7 @@ namespace GameServer
 
                 for (int i = 0; i <= MaxPlayers; i++)
                 {
-                    if (Clients[i].Tcp.socket == null)
+                    if (Clients[i].Tcp.Socket == null)
                     {
                         Clients[i].Tcp.Connect(client);
                         return;
@@ -57,6 +61,13 @@ namespace GameServer
             {
                 Clients.Add(i, new Client(i));
             }
+
+            packetHandlers = new Dictionary<int, PacketHandler>()
+            {
+                { (int)ClientPackets.WelcomeReceived, ServerHandle.WelcomeReceived }
+            };
+            
+            Console.WriteLine("Initialize packets.");
         }
     }
 }

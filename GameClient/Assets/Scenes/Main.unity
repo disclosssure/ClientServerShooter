@@ -353,8 +353,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f96b407f663fed46876dcfb3fe725f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startMenu: {fileID: 0}
-  usernamField: {fileID: 0}
+  startMenu: {fileID: 28457727}
+  usernamField: {fileID: 643942806}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,6 +882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1101727772}
   - component: {fileID: 1101727773}
+  - component: {fileID: 1101727774}
   m_Layer: 0
   m_Name: ClientManager
   m_TagString: Untagged
@@ -918,6 +919,18 @@ MonoBehaviour:
   ip: 127.0.0.1
   port: 26950
   localID: 0
+--- !u!114 &1101727774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101727771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9be0233173b4d2145977f7311da2e294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1289135746
 GameObject:
   m_ObjectHideFlags: 0
