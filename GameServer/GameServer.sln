@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "GameServer\GameServer.csproj", "{5025F177-D3BB-4312-B2C0-46FF49CA874D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5025F177-D3BB-4312-B2C0-46FF49CA874D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5025F177-D3BB-4312-B2C0-46FF49CA874D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5025F177-D3BB-4312-B2C0-46FF49CA874D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5025F177-D3BB-4312-B2C0-46FF49CA874D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
