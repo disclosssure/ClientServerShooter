@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Net;
 using System.Net.Sockets;
 
@@ -9,11 +10,13 @@ namespace GameServer
         public static int dataBufferSize = 4096;
         public int Id { get; private set; }
         public TCP Tcp { get; private set; }
+        public UDP Udp { get; private set; }
 
         public Client(int id)
         {
             Id = id;
             Tcp = new TCP(Id);
+            Udp = new UDP(Id);
         }
         
         public class TCP
@@ -134,6 +137,44 @@ namespace GameServer
                 }
 
                 return false;
+            }
+        }
+
+        public class UDP
+        {
+            public IPEndPoint EndPoint;
+
+            private int _id;
+
+            public UDP(int id)
+            {
+                _id = id;
+            }
+
+            public void Connect(IPEndPoint endPoint)
+            {
+                EndPoint = endPoint;
+                ServerSend.UdpTest(_id);
+            }
+
+            public void SendData(Packet packet)
+            {
+                Server.SendUdpData(EndPoint, packet);
+            }
+
+            public void HandleData(Packet packetData)
+            {
+                int packetLenght = packetData.ReadInt();
+                byte[] packetBytes = packetData.ReadBytes(packetLenght);
+                
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
+                    using (Packet packet = new Packet(packetBytes))
+                    {
+                        int packetId = packet.ReadInt();
+                        Server.packetHandlers[packetId](_id, packet);
+                    }
+                });
             }
         }
     }

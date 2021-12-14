@@ -4,151 +4,142 @@ using System.Text;
 
 public enum ServerPackets
 {
-    Welcome = 0,
+    Welcome = 1,
+    UdpTest
 }
 
 public enum ClientPackets
 {
-    WelcomeReceived = 0,
+    WelcomeReceived = 1,
+    UdpTestReceived
 }
 
 public class Packet : IDisposable
 {
-    private List<byte> _buffer;
-    private byte[] _readableBuffer;
-    private int _readPos;
-
-    private bool _disposed;
+    private List<byte> buffer;
+    private byte[] readableBuffer;
+    private int readPos;
 
     public Packet()
     {
-        _buffer = new List<byte>();
-        _readPos = 0;
+        buffer = new List<byte>();
+        readPos = 0;
     }
 
-    public Packet(int id)
+    public Packet(int _id)
     {
-        _buffer = new List<byte>();
-        _readPos = 0;
+        buffer = new List<byte>();
+        readPos = 0;
 
-        Write(id);
+        Write(_id);
     }
 
-    public Packet(byte[] data)
+    public Packet(byte[] _data)
     {
-        _buffer = new List<byte>();
-        _readPos = 0;
+        buffer = new List<byte>();
+        readPos = 0;
 
-        SetBytes(data);
+        SetBytes(_data);
     }
 
     #region Functions
-    public void SetBytes(byte[] data)
+    public void SetBytes(byte[] _data)
     {
-        Write(data);
-        _readableBuffer = _buffer.ToArray();
+        Write(_data);
+        readableBuffer = buffer.ToArray();
     }
 
     public void WriteLength()
     {
-        _buffer.InsertRange(0, BitConverter.GetBytes(_buffer.Count));
+        buffer.InsertRange(0, BitConverter.GetBytes(buffer.Count));
     }
 
-    public void InsertInt(int value)
+    public void InsertInt(int _value)
     {
-        _buffer.InsertRange(0, BitConverter.GetBytes(value));
+        buffer.InsertRange(0, BitConverter.GetBytes(_value));
     }
 
     public byte[] ToArray()
     {
-        _readableBuffer = _buffer.ToArray();
-        return _readableBuffer;
+        readableBuffer = buffer.ToArray();
+        return readableBuffer;
     }
 
     public int Length()
     {
-        return _buffer.Count;
+        return buffer.Count;
     }
 
     public int UnreadLength()
     {
-        return Length() - _readPos;
+        return Length() - readPos;
     }
 
-    public void Reset(bool shouldReset = true)
+    public void Reset(bool _shouldReset = true)
     {
-        if (shouldReset)
+        if (_shouldReset)
         {
-            _buffer.Clear();
-            _readableBuffer = null;
-            _readPos = 0;
+            buffer.Clear();
+            readableBuffer = null;
+            readPos = 0;
         }
         else
         {
-            _readPos -= 4;
+            readPos -= 4;
         }
     }
     #endregion
 
     #region Write Data
-    public void Write(byte value)
+    public void Write(byte _value)
     {
-        _buffer.Add(value);
+        buffer.Add(_value);
     }
-
-    public void Write(byte[] value)
+    
+    public void Write(byte[] _value)
     {
-        _buffer.AddRange(value);
+        buffer.AddRange(_value);
     }
-
-    public void Write(short value)
+    
+    public void Write(short _value)
     {
-        _buffer.AddRange(BitConverter.GetBytes(value));
+        buffer.AddRange(BitConverter.GetBytes(_value));
     }
-
-    public void Write(int value)
+    
+    public void Write(int _value)
     {
-        _buffer.AddRange(BitConverter.GetBytes(value));
+        buffer.AddRange(BitConverter.GetBytes(_value));
     }
-
     public void Write(long _value)
     {
-        _buffer.AddRange(BitConverter.GetBytes(_value));
+        buffer.AddRange(BitConverter.GetBytes(_value));
     }
-
     public void Write(float _value)
     {
-        _buffer.AddRange(BitConverter.GetBytes(_value));
+        buffer.AddRange(BitConverter.GetBytes(_value));
     }
-
-    internal void Reset(object handleData)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Write(bool _value)
     {
-        _buffer.AddRange(BitConverter.GetBytes(_value));
+        buffer.AddRange(BitConverter.GetBytes(_value));
     }
-
     public void Write(string _value)
     {
         Write(_value.Length);
-        _buffer.AddRange(Encoding.ASCII.GetBytes(_value));
+        buffer.AddRange(Encoding.ASCII.GetBytes(_value));
     }
     #endregion
 
     #region Read Data
-    public byte ReadByte(bool moveReadPos = true)
+    public byte ReadByte(bool _moveReadPos = true)
     {
-        if (_buffer.Count > _readPos)
+        if (buffer.Count > readPos)
         {
-            byte value = _readableBuffer[_readPos];
-            if (moveReadPos)
+            byte _value = readableBuffer[readPos];
+            if (_moveReadPos)
             {
-                _readPos += 1;
+                readPos += 1;
             }
-            return value; // Return the byte
+            return _value; // Return the byte
         }
         else
         {
@@ -156,16 +147,16 @@ public class Packet : IDisposable
         }
     }
 
-    public byte[] ReadBytes(int length, bool moveReadPos = true)
+    public byte[] ReadBytes(int _length, bool _moveReadPos = true)
     {
-        if (_buffer.Count > _readPos)
+        if (buffer.Count > readPos)
         {
-            byte[] value = _buffer.GetRange(_readPos, length).ToArray();
-            if (moveReadPos)
+            byte[] _value = buffer.GetRange(readPos, _length).ToArray();
+            if (_moveReadPos)
             {
-                _readPos += length;
+                readPos += _length;
             }
-            return value; // Return the bytes
+            return _value;
         }
         else
         {
@@ -173,16 +164,16 @@ public class Packet : IDisposable
         }
     }
 
-    public short ReadShort(bool moveReadPos = true)
+    public short ReadShort(bool _moveReadPos = true)
     {
-        if (_buffer.Count > _readPos)
+        if (buffer.Count > readPos)
         {
-            short value = BitConverter.ToInt16(_readableBuffer, _readPos);
-            if (moveReadPos)
+            short _value = BitConverter.ToInt16(readableBuffer, readPos);
+            if (_moveReadPos)
             {
-                _readPos += 2;
+                readPos += 2;
             }
-            return value; // Return the short
+            return _value;
         }
         else
         {
@@ -190,16 +181,16 @@ public class Packet : IDisposable
         }
     }
 
-    public int ReadInt(bool moveReadPos = true)
+    public int ReadInt(bool _moveReadPos = true)
     {
-        if (_buffer.Count > _readPos)
+        if (buffer.Count > readPos)
         {
-            int value = BitConverter.ToInt32(_readableBuffer, _readPos);
-            if (moveReadPos)
+            int _value = BitConverter.ToInt32(readableBuffer, readPos);
+            if (_moveReadPos)
             {
-                _readPos += 4;
+                readPos += 4;
             }
-            return value;
+            return _value;
         }
         else
         {
@@ -207,16 +198,16 @@ public class Packet : IDisposable
         }
     }
 
-    public long ReadLong(bool moveReadPos = true)
+    public long ReadLong(bool _moveReadPos = true)
     {
-        if (_buffer.Count > _readPos)
+        if (buffer.Count > readPos)
         {
-            long value = BitConverter.ToInt64(_readableBuffer, _readPos);
-            if (moveReadPos)
+            long _value = BitConverter.ToInt64(readableBuffer, readPos);
+            if (_moveReadPos)
             {
-                _readPos += 8;
+                readPos += 8;
             }
-            return value; // Return the long
+            return _value; // Return the long
         }
         else
         {
@@ -224,16 +215,16 @@ public class Packet : IDisposable
         }
     }
 
-    public float ReadFloat(bool moveReadPos = true)
+    public float ReadFloat(bool _moveReadPos = true)
     {
-        if (_buffer.Count > _readPos)
+        if (buffer.Count > readPos)
         {
-            float value = BitConverter.ToSingle(_readableBuffer, _readPos);
-            if (moveReadPos)
+            float _value = BitConverter.ToSingle(readableBuffer, readPos);
+            if (_moveReadPos)
             {
-                _readPos += 4;
+                readPos += 4;
             }
-            return value;
+            return _value;
         }
         else
         {
@@ -241,16 +232,16 @@ public class Packet : IDisposable
         }
     }
 
-    public bool ReadBool(bool moveReadPos = true)
+    public bool ReadBool(bool _moveReadPos = true)
     {
-        if (_buffer.Count > _readPos)
+        if (buffer.Count > readPos)
         {
-            bool value = BitConverter.ToBoolean(_readableBuffer, _readPos);
-            if (moveReadPos)
+            bool _value = BitConverter.ToBoolean(readableBuffer, readPos);
+            if (_moveReadPos)
             {
-                _readPos += 1;
+                readPos += 1;
             }
-            return value;
+            return _value;
         }
         else
         {
@@ -258,17 +249,17 @@ public class Packet : IDisposable
         }
     }
 
-    public string ReadString(bool moveReadPos = true)
+    public string ReadString(bool _moveReadPos = true)
     {
         try
         {
-            int length = ReadInt();
-            string value = Encoding.ASCII.GetString(_readableBuffer, _readPos, length);
-            if (moveReadPos && value.Length > 0)
+            int _length = ReadInt();
+            string _value = Encoding.ASCII.GetString(readableBuffer, readPos, _length);
+            if (_moveReadPos && _value.Length > 0)
             {
-                _readPos += length;
+                readPos += _length;
             }
-            return value;
+            return _value; // Return the string
         }
         catch
         {
@@ -276,18 +267,21 @@ public class Packet : IDisposable
         }
     }
     #endregion
-    protected virtual void Dispose(bool disposing)
+
+    private bool disposed = false;
+
+    protected virtual void Dispose(bool _disposing)
     {
-        if (!_disposed)
+        if (!disposed)
         {
-            if (disposing)
+            if (_disposing)
             {
-                _buffer = null;
-                _readableBuffer = null;
-                _readPos = 0;
+                buffer = null;
+                readableBuffer = null;
+                readPos = 0;
             }
 
-            _disposed = true;
+            disposed = true;
         }
     }
 
