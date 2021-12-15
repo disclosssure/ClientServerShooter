@@ -1,22 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public PlayerManager player;
-    public float sensitivity = 100f;
+    [Header("Player")]
+    [SerializeField] private PlayerManager _player;
+    
+    [Header("Camera settings")]
+    [SerializeField] private float _sensitivity;
+    
+    [Range(0, 90)]
+    [SerializeField] private float _clampAngle;
 
-    public float clampAngle = 85;
-
-    private float verticalRotation;
-    private float horizontalRotation;
+    private float _verticalRotation;
+    private float _horizontalRotation;
 
     private void Start()
     {
-        verticalRotation = transform.localEulerAngles.x;
-        horizontalRotation = player.transform.eulerAngles.y;
+        _verticalRotation = transform.localEulerAngles.x;
+        _horizontalRotation = _player.transform.eulerAngles.y;
     }
 
     private void Update()
@@ -27,15 +28,15 @@ public class CameraController : MonoBehaviour
 
     private void Look()
     {
-        float mouseVertical = -Input.GetAxis("Mouse Y");
-        float mouseHorizontal = Input.GetAxis("Mouse X");
+        float verticalInput = -Input.GetAxis("Mouse Y");
+        float horizontalInput = Input.GetAxis("Mouse X");
 
-        verticalRotation += mouseVertical * sensitivity * Time.deltaTime;
-        horizontalRotation += mouseHorizontal * sensitivity * Time.deltaTime;
+        _verticalRotation += verticalInput * _sensitivity * Time.deltaTime;
+        _horizontalRotation += horizontalInput * _sensitivity * Time.deltaTime;
 
-        verticalRotation = Mathf.Clamp(verticalRotation, -clampAngle, clampAngle);
+        _verticalRotation = Mathf.Clamp(_verticalRotation, -_clampAngle, _clampAngle);
         
-        transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
-        player.transform.rotation = Quaternion.Euler(0f, horizontalRotation, 0f);
+        transform.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
+        _player.transform.rotation = Quaternion.Euler(0f, _horizontalRotation, 0f);
     }
 }

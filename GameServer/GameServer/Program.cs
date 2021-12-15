@@ -5,13 +5,13 @@ namespace GameServer
 {
     class Program
     {
-        private static bool isRunning; 
+        private static bool _isRunning; 
         static void Main(string[] args)
         {
             Console.Title = "Server";
-            isRunning = true;
+            _isRunning = true;
 
-            Thread mainThread = new Thread(new ThreadStart(MainThread));
+            Thread mainThread = new Thread(MainThread);
             mainThread.Start();
             
             Server.Start(4, 26950);
@@ -22,7 +22,7 @@ namespace GameServer
             Console.WriteLine($"Mian thread started. Running at {Constants.k_ticksPerSecond} ticks per second");
             DateTime nextLoop = DateTime.Now;
 
-            while (isRunning)
+            while (_isRunning)
             {
                 while (nextLoop < DateTime.Now)
                 {

@@ -1,16 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
-    public static Dictionary<int, PlayerManager> Players = new Dictionary<int, PlayerManager>();
-
+    
     [SerializeField] private GameObject _localPlayerPrefab;
     [SerializeField] private GameObject _playerPrefab;
-
+    
+    public static readonly Dictionary<int, PlayerManager> Players = new Dictionary<int, PlayerManager>();
     
     private void Awake()
     {
@@ -28,7 +26,7 @@ public class GameManager : MonoBehaviour
     public void SpawnPlayer(int id, string username, Vector3 position, Quaternion rotation)
     {
         GameObject player;
-        if (id == Client.Instance.localID)
+        if (id == Client.Instance.Id)
         {
             player = Instantiate(_localPlayerPrefab, position, rotation);
         }

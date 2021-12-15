@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 public class ThreadManager
 {
-    private static readonly List<Action> _executeOnMainThread = new List<Action>();
-    private static readonly List<Action> _executeCopiedOnMainThread = new List<Action>();
-    private static bool _actionToExecuteOnMainThread = false;
+    private static readonly List<Action> _executeOnMainThread = new();
+    private static readonly List<Action> _executeCopiedOnMainThread = new();
+    private static bool _actionToExecuteOnMainThread;
     
-    public static void ExecuteOnMainThread(Action _action)
+    public static void ExecuteOnMainThread(Action action)
     {
-        if (_action == null)
+        if (action == null)
         {
             Console.WriteLine("No action to execute on main thread!");
             return;
@@ -17,7 +17,7 @@ public class ThreadManager
 
         lock (_executeOnMainThread)
         {
-            _executeOnMainThread.Add(_action);
+            _executeOnMainThread.Add(action);
             _actionToExecuteOnMainThread = true;
         }
     }
@@ -33,11 +33,8 @@ public class ThreadManager
                 _executeOnMainThread.Clear();
                 _actionToExecuteOnMainThread = false;
             }
-
-            for (int i = 0; i < _executeCopiedOnMainThread.Count; i++)
-            {
-                _executeCopiedOnMainThread[i]();
-            }
+            
+            _executeCopiedOnMainThread.ForEach(action => action.Invoke());
         }
     }
 }

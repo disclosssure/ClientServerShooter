@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Net;
-using TMPro;
 using UnityEngine;
 
 public class ClientHandle : MonoBehaviour
@@ -10,12 +7,12 @@ public class ClientHandle : MonoBehaviour
     {
         string message = packet.ReadString();
         int id = packet.ReadInt();
-
         Debug.Log($"Message from server: {message}");
-        Client.Instance.localID = id;
+        
+        Client.Instance.SetID(id);
         ClientSend.WelcomeReceived();
         
-        Client.Instance.udp.Connect(((IPEndPoint)Client.Instance.tcp.socket.Client.LocalEndPoint).Port);
+        Client.Instance.Udp.Connect(((IPEndPoint)Client.Instance.Tcp.socket.Client.LocalEndPoint).Port);
     }
 
     public static void SpawnPlayer(Packet packet)

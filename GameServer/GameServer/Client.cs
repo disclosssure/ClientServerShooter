@@ -28,7 +28,7 @@ namespace GameServer
             private readonly int _id;
 
             private NetworkStream _stream;
-            private Packet receivedData;
+            private Packet _receivedData;
             private byte[] _receiveBuffer;
 
             public TCP(int id)
@@ -44,7 +44,7 @@ namespace GameServer
 
                 _stream = socket.GetStream();
 
-                receivedData = new Packet();
+                _receivedData = new Packet();
                 _receiveBuffer = new byte[dataBufferSize];
 
                 _stream.BeginRead(_receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
@@ -65,7 +65,7 @@ namespace GameServer
                         byte[] data = new byte[byteLenght];
                         Array.Copy(_receiveBuffer, data, byteLenght);
                         
-                        receivedData.Reset(HandleData(data));
+                        _receivedData.Reset(HandleData(data));
                         _stream.BeginRead(_receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
                     }
                     catch (Exception e)
@@ -96,11 +96,11 @@ namespace GameServer
             {
                 int packetLenght = 0;
 
-                receivedData.SetBytes(data);
+                _receivedData.SetBytes(data);
 
-                if (receivedData.UnreadLength() >= 4)
+                if (_receivedData.UnreadLength() >= 4)
                 {
-                    packetLenght = receivedData.ReadInt();
+                    packetLenght = _receivedData.ReadInt();
 
                     if (packetLenght <= 0)
                     {
@@ -108,23 +108,23 @@ namespace GameServer
                     }
                 }
 
-                while (packetLenght > 0 && packetLenght <= receivedData.UnreadLength())
+                while (packetLenght > 0 && packetLenght <= _receivedData.UnreadLength())
                 {
-                    byte[] packetBytes = receivedData.ReadBytes(packetLenght);
+                    byte[] packetBytes = _receivedData.ReadBytes(packetLenght);
 
                     ThreadManager.ExecuteOnMainThread(() =>
                     {
                         using (Packet packet = new Packet(packetBytes))
                         {
-                            int packetID = packet.ReadInt();
-                            Server.packetHandlers[packetID](_id, packet);
+                            int packetId = packet.ReadInt();
+                            Server.PacketHandlers[packetId](_id, packet);
                         }
                     });
 
                     packetLenght = 0;
-                    if (receivedData.UnreadLength() >= 4)
+                    if (_receivedData.UnreadLength() >= 4)
                     {
-                        packetLenght = receivedData.ReadInt();
+                        packetLenght = _receivedData.ReadInt();
 
                         if (packetLenght <= 0)
                         {
@@ -145,7 +145,7 @@ namespace GameServer
             {
                 Socket.Close();
                 _stream = null;
-                receivedData = null;
+                _receivedData = null;
                 _receiveBuffer = null;
                 Socket = null;
             }
@@ -182,7 +182,7 @@ namespace GameServer
                     using (Packet packet = new Packet(packetBytes))
                     {
                         int packetId = packet.ReadInt();
-                        Server.packetHandlers[packetId](_id, packet);
+                        Server.PacketHandlers[packetId](_id, packet);
                     }
                 });
             }

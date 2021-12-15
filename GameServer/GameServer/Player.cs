@@ -11,7 +11,7 @@ namespace GameServer
         public Vector3 Position { get; private set; }
         public Quaternion Rotation { get; private set; }
 
-        private float _moveSpeed = 5f / Constants.k_ticksPerSecond;
+        private readonly float _moveSpeed = 5f / Constants.k_ticksPerSecond;
         private bool[] _inputs; 
 
         public Player(int id, string username, Vector3 spawnPosition)

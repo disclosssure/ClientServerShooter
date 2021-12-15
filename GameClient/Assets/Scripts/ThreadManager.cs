@@ -13,9 +13,9 @@ public class ThreadManager : MonoBehaviour
         UpdateMain();
     }
 
-    public static void ExecuteOnMainThread(Action _action)
+    public static void ExecuteOnMainThread(Action action)
     {
-        if (_action == null)
+        if (action == null)
         {
             Debug.Log("No action to execute on main thread!");
             return;
@@ -23,7 +23,7 @@ public class ThreadManager : MonoBehaviour
 
         lock (_executeOnMainThread)
         {
-            _executeOnMainThread.Add(_action);
+            _executeOnMainThread.Add(action);
             _actionToExecuteOnMainThread = true;
         }
     }

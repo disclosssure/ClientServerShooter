@@ -13,7 +13,7 @@ namespace GameServer
         public static Dictionary<int, Client> Clients = new();
 
         public delegate void PacketHandler(int fromClient, Packet packet);
-        public static Dictionary<int, PacketHandler> packetHandlers;
+        public static Dictionary<int, PacketHandler> PacketHandlers;
 
         private static TcpListener _tcpListener { get; set; }
         private static UdpClient _udpListener { get; set; }
@@ -123,7 +123,7 @@ namespace GameServer
                 Clients.Add(i, new Client(i));
             }
 
-            packetHandlers = new Dictionary<int, PacketHandler>()
+            PacketHandlers = new Dictionary<int, PacketHandler>()
             {
                 { (int)ClientPackets.WelcomeReceived, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.PlayerMovement, ServerHandle.PlayerMovement },

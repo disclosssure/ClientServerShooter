@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class ClientSend : MonoBehaviour
@@ -9,21 +6,21 @@ public class ClientSend : MonoBehaviour
     private static void SendTcpData(Packet packet)
     {
         packet.WriteLength();
-        Client.Instance.tcp.SendData(packet);
+        Client.Instance.Tcp.SendData(packet);
     }
 
     private static void SendUdpData(Packet packet)
     {
         packet.WriteLength();
-        Client.Instance.udp.SendData(packet);
+        Client.Instance.Udp.SendData(packet);
     }
 
     public static void WelcomeReceived()
     {
         using (Packet packet = new Packet((int)ClientPackets.WelcomeReceived))
         {
-            packet.Write(Client.Instance.localID);
-            packet.Write(UIManager.Instance.usernamField.text);
+            packet.Write(Client.Instance.Id);
+            packet.Write(UIManager.Instance.Username);
 
             SendTcpData(packet);
         }
@@ -35,7 +32,7 @@ public class ClientSend : MonoBehaviour
         {
             packet.Write(inputs.Length);
             inputs.ToList().ForEach(i => packet.Write(i));
-            packet.Write(GameManager.Players[Client.Instance.localID].transform.rotation);
+            packet.Write(GameManager.Players[Client.Instance.Id].transform.rotation);
 
             SendUdpData(packet);
         }

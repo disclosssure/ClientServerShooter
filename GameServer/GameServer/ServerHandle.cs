@@ -7,15 +7,13 @@ namespace GameServer
     {
         public static void WelcomeReceived(int fromClient, Packet packet)
         {
-            int clientID = packet.ReadInt();
+            int clientId = packet.ReadInt();
             string username = packet.ReadString();
 
-            Console.WriteLine(
-                $"{Server.Clients[fromClient].Tcp.Socket.Client.RemoteEndPoint} connected successfully and is now player {fromClient}.");
-            if (fromClient != clientID)
+            Console.WriteLine($"{Server.Clients[fromClient].Tcp.Socket.Client.RemoteEndPoint} connected successfully and is now player {fromClient}.");
+            if (fromClient != clientId)
             {
-                Console.WriteLine(
-                    $"Player \"{username}\" (ID: {fromClient}) has assumed the wrong client ID ({clientID})!");
+                Console.WriteLine($"Player \"{username}\" (ID: {fromClient}) has assumed the wrong client ID ({clientId})!");
             }
 
             Server.Clients[fromClient].SendIntoGame(username);
