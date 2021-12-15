@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 public enum ServerPackets
 {
     Welcome = 1,
-    UdpTest
+    PlayerSpawn = 2,
+    PlayerPosition = 3,
+    PlayerRotation = 4,
 }
 
 public enum ClientPackets
 {
     WelcomeReceived = 1,
-    UdpTestReceived
+    PlayerMovement = 2,
 }
 
 public class Packet : IDisposable
@@ -43,6 +46,7 @@ public class Packet : IDisposable
     }
 
     #region Functions
+
     public void SetBytes(byte[] _data)
     {
         Write(_data);
@@ -88,48 +92,71 @@ public class Packet : IDisposable
             readPos -= 4;
         }
     }
+
     #endregion
 
     #region Write Data
+
     public void Write(byte _value)
     {
         buffer.Add(_value);
     }
-    
+
     public void Write(byte[] _value)
     {
         buffer.AddRange(_value);
     }
-    
+
     public void Write(short _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
-    
+
     public void Write(int _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
+
     public void Write(long _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
+
     public void Write(float _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
+
     public void Write(bool _value)
     {
         buffer.AddRange(BitConverter.GetBytes(_value));
     }
+
     public void Write(string _value)
     {
         Write(_value.Length);
         buffer.AddRange(Encoding.ASCII.GetBytes(_value));
     }
+
+    public void Write(Vector3 value)
+    {
+        Write(value.X);
+        Write(value.Y);
+        Write(value.Z);
+    }
+
+    public void Write(Quaternion value)
+    {
+        Write(value.X);
+        Write(value.Y);
+        Write(value.Z);
+        Write(value.W);
+    }
+
     #endregion
 
     #region Read Data
+
     public byte ReadByte(bool _moveReadPos = true)
     {
         if (buffer.Count > readPos)
@@ -139,6 +166,7 @@ public class Packet : IDisposable
             {
                 readPos += 1;
             }
+
             return _value; // Return the byte
         }
         else
@@ -156,6 +184,7 @@ public class Packet : IDisposable
             {
                 readPos += _length;
             }
+
             return _value;
         }
         else
@@ -173,6 +202,7 @@ public class Packet : IDisposable
             {
                 readPos += 2;
             }
+
             return _value;
         }
         else
@@ -190,6 +220,7 @@ public class Packet : IDisposable
             {
                 readPos += 4;
             }
+
             return _value;
         }
         else
@@ -207,6 +238,7 @@ public class Packet : IDisposable
             {
                 readPos += 8;
             }
+
             return _value; // Return the long
         }
         else
@@ -224,6 +256,7 @@ public class Packet : IDisposable
             {
                 readPos += 4;
             }
+
             return _value;
         }
         else
@@ -241,6 +274,7 @@ public class Packet : IDisposable
             {
                 readPos += 1;
             }
+
             return _value;
         }
         else
@@ -259,12 +293,21 @@ public class Packet : IDisposable
             {
                 readPos += _length;
             }
+
             return _value; // Return the string
         }
         catch
         {
             throw new Exception("Could not read value of type 'string'!");
         }
+    }
+    public Vector3 ReadVector3(bool _moveReadPos = true)
+    {
+        return new Vector3(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
+    }
+    public Quaternion ReadQuaternion(bool _moveReadPos = true)
+    {
+        return new Quaternion(ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos), ReadFloat(_moveReadPos));
     }
     #endregion
 

@@ -15,12 +15,16 @@
 
         #region UDP
 
-        public static void UdpTest(int toClient)
+        public static void SpawnPlayer(int toClient, Player player)
         {
-            using (Packet packet = new Packet((int)ServerPackets.UdpTest))
+            using (Packet packet = new Packet((int)ServerPackets.PlayerSpawn))
             {
-                packet.Write("A test packet for UDP.");
-                SendUdpData(toClient, packet);
+                packet.Write(player.Id);
+                packet.Write(player.Username);
+                packet.Write(player.Position);
+                packet.Write(player.Rotation);
+                
+                SendTcpData(toClient, packet);
             }
         }
 
@@ -81,5 +85,27 @@
         }
         
         #endregion
+
+        public static void PlayerPosition(Player player)
+        {
+            using (Packet packet = new Packet((int)ServerPackets.PlayerPosition))
+            {
+                packet.Write(player.Id);
+                packet.Write(player.Position);
+                
+                SendUdpDataToAll(packet);
+            }
+        }
+
+        public static void PlayerRotation(Player player)
+        {
+            using (Packet packet = new Packet((int)ServerPackets.PlayerRotation))
+            {
+                packet.Write(player.Id);
+                packet.Write(player.Rotation);
+                
+                SendUdpDataToAll(player.Id, packet);
+            }
+        }
     }
 }

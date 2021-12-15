@@ -7,7 +7,7 @@ using System;
 
 public class Client : MonoBehaviour
 {
-    public static Client Instance;
+    public static Client Instance { get; private set; }
 
     public static int dataBufferSize = 4096;
 
@@ -256,8 +256,9 @@ public class Client : MonoBehaviour
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
             { (int)ServerPackets.Welcome, ClientHandle.Welcome },
-            { (int)ServerPackets.UdpTest, ClientHandle.UdpTest },
-
+            { (int)ServerPackets.PlayerSpawn, ClientHandle.SpawnPlayer },
+            { (int)ServerPackets.PlayerPosition, ClientHandle.PlayerPosition },
+            { (int)ServerPackets.PlayerRotation, ClientHandle.PlayerRotation },
         };
 
         Debug.Log("Initialized packets.");
