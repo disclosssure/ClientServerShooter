@@ -34,7 +34,7 @@ namespace GameServer
             }
             if (_inputs[1])     // A
             {
-                direction.X += 1;
+                direction.X -= 1;
             }
             if (_inputs[2])     // S
             {
@@ -42,7 +42,7 @@ namespace GameServer
             }
             if (_inputs[3])     // D
             {
-                direction.X -= 1;
+                direction.X += 1;
             }
 
             Move(direction);
