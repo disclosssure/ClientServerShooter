@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class NetworkManager : MonoBehaviour
@@ -21,11 +22,12 @@ public class NetworkManager : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_EDITOR
-        Debug.LogError("Build the project to start the server!");
-#else
         StartServer();
-#endif
+    }
+
+    private void OnApplicationQuit()
+    {
+        Server.Stop();
     }
 
     public Player InstantiatePlayer() => Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity);

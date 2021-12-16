@@ -25,10 +25,16 @@ public class Server
             InitServerData();
             InitTcpListener();
         }
+        
+        public static void Stop()
+        {
+            _tcpListener.Stop();
+            _udpListener.Close();
+        }
 
         private static void InitTcpListener()
         {
-            Console.WriteLine("Starting server...");
+            Debug.Log("Starting server...");
 
             _tcpListener = new TcpListener(IPAddress.Any, Port);
             _tcpListener.Start();
@@ -128,6 +134,6 @@ public class Server
                 { (int)ClientPackets.PlayerMovement, ServerHandle.PlayerMovement },
             };
             
-            Console.WriteLine("Initialize packets.");
+            Debug.Log("Initialize packets.");
         }
 }

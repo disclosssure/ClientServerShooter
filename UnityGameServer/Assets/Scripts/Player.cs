@@ -6,11 +6,15 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private int _id;
     [SerializeField] private string _username;
+
+    [SerializeField] private float _moveSpeed;
+    [SerializeField] private CharacterController _controller;
     
     public int Id => _id;
     public string Username => _username;
 
-    private readonly float _moveSpeed = 5f / Constants.k_ticksPerSecond;
+    private const float k_gravity = -9.81f;
+    
     private bool[] _inputs; 
 
     public void Init(int id, string username)
@@ -48,7 +52,8 @@ public class Player : MonoBehaviour
     private void Move(Vector2 direction)
     {
         Vector3 moveDirection = transform.right * direction.x + transform.forward * direction.y;
-        transform.position += moveDirection * _moveSpeed;
+
+        _controller.Move(moveDirection * _moveSpeed * Time.fixedDeltaTime);
 
         ServerSend.PlayerPosition(this);
         ServerSend.PlayerRotation(this);
