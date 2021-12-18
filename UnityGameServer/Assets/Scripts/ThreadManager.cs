@@ -18,7 +18,7 @@ public class ThreadManager : MonoBehaviour
     {
         if (action == null)
         {
-            Console.WriteLine("No action to execute on main thread!");
+            Debug.Log("No action to execute on main thread!");
             return;
         }
 

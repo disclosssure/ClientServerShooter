@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ServerHandle
@@ -25,8 +23,8 @@ public class ServerHandle
         {
             inputs[i] = packet.ReadBool();
         }
-        var rotation = packet.ReadQuaternion();
+        var mousePosition = packet.ReadVector3();
 
-        Server.Clients[fromClient].Player.SetInput(inputs, rotation);
+        Server.Clients[fromClient].Player.HandleInput(inputs, mousePosition);
     }
 }

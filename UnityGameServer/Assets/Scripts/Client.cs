@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
@@ -69,7 +67,7 @@ public class Client
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"Error receiving TCP data: {e}");
+                        Debug.Log($"Error receiving TCP data: {e}");
                         Server.Clients[_id].Disconnect();
                     }
                 }
@@ -86,7 +84,7 @@ public class Client
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Error sending data to player {_id} via TCP: {e}");
+                    Debug.Log($"Error sending data to player {_id} via TCP: {e}");
                     throw;
                 }
             }
@@ -219,7 +217,7 @@ public class Client
 
         public void Disconnect()
         {
-            Console.WriteLine($"{Tcp.Socket.Client.RemoteEndPoint} has disconnected.");
+            Debug.Log($"{Tcp.Socket.Client.RemoteEndPoint} has disconnected.");
 
             ThreadManager.ExecuteOnMainThread(() =>
             {
@@ -229,5 +227,7 @@ public class Client
             
             Tcp.Disconnect();
             Udp.Disconnect();
+            
+            ServerSend.PlayerDisconnected(Id);
         }
 }

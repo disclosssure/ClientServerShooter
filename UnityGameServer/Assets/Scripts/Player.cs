@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,15 +8,14 @@ public class Player : MonoBehaviour
     [SerializeField] private int _id;
     [SerializeField] private string _username;
 
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private CharacterController _controller;
+    [SerializeField] private float _speed;
+    [SerializeField] private Rigidbody2D _rb;
     
     public int Id => _id;
     public string Username => _username;
 
-    private const float k_gravity = -9.81f;
-    
-    private bool[] _inputs; 
+    private bool[] _inputs;
+    private Vector3 _mousePosition;
 
     public void Init(int id, string username)
     {
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
         }
         if (_inputs[1])     // A
         {
-            direction.x += 1;
+            direction.x -= 1;
         }
         if (_inputs[2])     // S
         {
@@ -43,25 +43,33 @@ public class Player : MonoBehaviour
         }
         if (_inputs[3])     // D
         {
-            direction.x -= 1;
+            direction.x += 1;
         }
 
-        Move(direction);
+        Move(direction.normalized);
+        Rotate();
     }
 
     private void Move(Vector2 direction)
     {
-        Vector3 moveDirection = transform.right * direction.x + transform.forward * direction.y;
-
-        _controller.Move(moveDirection * _moveSpeed * Time.fixedDeltaTime);
+        _rb.MovePosition(transform.position + (Vector3)direction * _speed * Time.fixedDeltaTime);
 
         ServerSend.PlayerPosition(this);
+    }
+
+    private void Rotate()
+    {
+        Vector2 lookDirection = (Vector2)_mousePosition - _rb.position;
+
+        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+        _rb.rotation = angle;
+        
         ServerSend.PlayerRotation(this);
     }
 
-    public void SetInput(bool[] inputs, Quaternion rotation)
+    public void HandleInput(bool[] inputs, Vector3 mousePosition)
     {
         _inputs = inputs;
-        transform.rotation = rotation;
+        _mousePosition = mousePosition;
     }
 }

@@ -1,7 +1,8 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
-public class ClientSend : MonoBehaviour
+public class ClientSend
 {
     private static void SendTcpData(Packet packet)
     {
@@ -26,13 +27,13 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-    public static void PlayerMovement(bool[] inputs)
+    public static void PlayerMovement(bool[] inputs, Vector3 mousePosition)
     {
         using (Packet packet = new Packet((int)ClientPackets.PlayerMovement))
         {
             packet.Write(inputs.Length);
             inputs.ToList().ForEach(i => packet.Write(i));
-            packet.Write(GameManager.Players[Client.Instance.Id].transform.rotation);
+            packet.Write(mousePosition);
 
             SendUdpData(packet);
         }

@@ -291,6 +291,8 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.PlayerSpawn, ClientHandle.SpawnPlayer },
             { (int)ServerPackets.PlayerPosition, ClientHandle.PlayerPosition },
             { (int)ServerPackets.PlayerRotation, ClientHandle.PlayerRotation },
+            { (int)ServerPackets.PlayerDisconnected, ClientHandle.PlayerDisconnected },
+            // { (int)ServerPackets.CameraPosition, ClientHandle.CameraPosition },
         };
 
         Debug.Log("Initialized packets.");

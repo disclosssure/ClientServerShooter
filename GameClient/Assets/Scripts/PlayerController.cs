@@ -1,7 +1,15 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Camera _camera;
+
+    private void Awake()
+    {
+        _camera = Camera.main;
+    }
+
     private void FixedUpdate()
     {
         SendInputToServer();
@@ -15,7 +23,8 @@ public class PlayerController : MonoBehaviour
             Input.GetKey(KeyCode.S),
             Input.GetKey(KeyCode.D),
         };
-
-        ClientSend.PlayerMovement(inputs);
+        
+        Vector3 mousePosition = _camera.ScreenToWorldPoint(Input.mousePosition);
+        ClientSend.PlayerMovement(inputs, mousePosition);
     }
 }

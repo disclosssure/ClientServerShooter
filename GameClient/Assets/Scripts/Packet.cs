@@ -9,6 +9,8 @@ public enum ServerPackets
     PlayerSpawn = 2,
     PlayerPosition = 3,
     PlayerRotation = 4,
+    PlayerDisconnected = 5,
+    CameraPosition = 6,
 }
 
 public enum ClientPackets
