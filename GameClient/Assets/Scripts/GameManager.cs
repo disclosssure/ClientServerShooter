@@ -4,12 +4,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    
+
     [SerializeField] private GameObject _localPlayerPrefab;
     [SerializeField] private GameObject _playerPrefab;
-    
+
     public static readonly Dictionary<int, PlayerManager> Players = new Dictionary<int, PlayerManager>();
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -25,20 +25,26 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayer(int id, string username, Vector3 position, Quaternion rotation)
     {
-        GameObject player;
-        if (id == Client.Instance.Id)
-        {
-            player = Instantiate(_localPlayerPrefab, position, rotation);
-        }
-        else
-        {
-            player = Instantiate(_playerPrefab, position, rotation);
-        }
+        GameObject prefab = id == Client.Instance.Id ? _localPlayerPrefab : _playerPrefab;
+
+        GameObject player = Instantiate(prefab, position, rotation);
 
         var playerManager = player.GetComponent<PlayerManager>();
-        playerManager.Id = id;
-        playerManager.Username = username;
-        
-        Players.Add(id, playerManager);
+        if (playerManager)
+        {
+            playerManager.Init(id, username);
+
+            Players.Add(id, playerManager);
+
+            var mainCamera = Camera.main;
+            if (mainCamera)
+            {
+                var cameraController = mainCamera.GetComponent<CameraPositionController>();
+                if (cameraController)
+                {
+                    cameraController.Init();
+                }
+            }
+        }
     }
 }

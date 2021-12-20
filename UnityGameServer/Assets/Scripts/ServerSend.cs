@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class ServerSend
 {
     public static void Welcome(int toClient, string message)
@@ -115,12 +117,13 @@ public class ServerSend
         }
     }
 
-    // public static void CameraPosition(int playerId, Vector3 position)
-    // {
-    //     using (Packet packet = new Packet((int)ServerPackets.CameraPosition))
-    //     {
-    //         packet.Write(position);
-    //         SendUdpData(playerId, packet);
-    //     }
-    // }
+    public static void CameraPosition(int playerId, Vector3 position)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.CameraPosition))
+        {
+            packet.Write(playerId);
+            packet.Write(position);
+            SendUdpData(playerId, packet);
+        }
+    }
 }

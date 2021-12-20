@@ -195,6 +195,9 @@ public class Client
             Player = NetworkManager.Instance.InstantiatePlayer();
             Player.Init(Id, playerName);
 
+            var cameraController = Player.gameObject.AddComponent<CameraPositionController>();
+            cameraController.Init(Id, Player.transform);
+
             foreach (var client in Server.Clients.Values)
             {
                 if (client.Player != null)

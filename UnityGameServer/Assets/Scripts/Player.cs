@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -16,16 +13,8 @@ public class Player : MonoBehaviour
 
     private bool[] _inputs;
     private Vector3 _mousePosition;
-
-    public void Init(int id, string username)
-    {
-        _id = id;
-        _username = username;
-
-        _inputs = new bool[4];
-    }
-
-    public void FixedUpdate()
+    
+    private void FixedUpdate()
     {
         Vector2 direction = Vector2.zero;
 
@@ -49,6 +38,20 @@ public class Player : MonoBehaviour
         Move(direction.normalized);
         Rotate();
     }
+    
+    public void Init(int id, string username)
+    {
+        _id = id;
+        _username = username;
+
+        _inputs = new bool[4];
+    }
+    
+    public void HandleInput(bool[] inputs, Vector3 mousePosition)
+    {
+        _inputs = inputs;
+        _mousePosition = mousePosition;
+    }
 
     private void Move(Vector2 direction)
     {
@@ -65,11 +68,5 @@ public class Player : MonoBehaviour
         _rb.rotation = angle;
         
         ServerSend.PlayerRotation(this);
-    }
-
-    public void HandleInput(bool[] inputs, Vector3 mousePosition)
-    {
-        _inputs = inputs;
-        _mousePosition = mousePosition;
     }
 }

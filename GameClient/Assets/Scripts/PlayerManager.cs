@@ -1,9 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public int Id;
-    public string Username;
+    public int Id => _id;
+    public string Username => _username;
+
+    private int _id;
+    private string _username;
+    
+    public void Init(int id, string username)
+    {
+        _id = id;
+        _username = username;
+    }
 }

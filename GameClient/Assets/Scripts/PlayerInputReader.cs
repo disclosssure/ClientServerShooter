@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerInputReader : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
 
@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour
 
     private void SendInputToServer()
     {
-        bool[] inputs = {
+        bool[] inputs = 
+        {
             Input.GetKey(KeyCode.W),
             Input.GetKey(KeyCode.A),
             Input.GetKey(KeyCode.S),

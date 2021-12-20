@@ -674,7 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d64affdb5552c914c9c5df99cbe35cbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _localPlayerPrefab: {fileID: 4746100505507724093, guid: 127e5fb39bf334a4cb81a4e87f5fea8b, type: 3}
+  _localPlayerPrefab: {fileID: 3391988232448450858, guid: 35376525729856b458e3af723cac781c, type: 3}
   _playerPrefab: {fileID: 3646894727210544256, guid: 9e6062a38574dae4f981f06c3dbc332e, type: 3}
 --- !u!1 &857686225
 GameObject:
@@ -978,6 +978,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1337716492}
   - component: {fileID: 1337716491}
+  - component: {fileID: 1337716490}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -985,6 +986,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1337716490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337716489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34bbb885d0d7d7f4e856c84115120b77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &1337716491
 Camera:
   m_ObjectHideFlags: 0

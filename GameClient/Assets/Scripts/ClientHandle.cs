@@ -53,16 +53,11 @@ public class ClientHandle
         GameManager.Players.Remove(playerId);
     }
 
-    // public static void CameraPosition(Packet packet)
-    // {
-    //     try
-    //     {
-    //         int id = packet.ReadInt();
-    //         Vector3 position = packet.ReadVector3();
-    //         OnCameraPositionChanged?.Invoke(position);
-    //     }
-    //     catch
-    //     {
-    //     }
-    // }
+    public static void CameraPosition(Packet packet)
+    {
+        int id = packet.ReadInt();
+        Vector3 position = packet.ReadVector3();
+
+        OnCameraPositionChanged?.Invoke(position);
+    }
 }
