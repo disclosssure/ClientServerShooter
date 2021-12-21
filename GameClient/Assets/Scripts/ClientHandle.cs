@@ -26,7 +26,7 @@ public class ClientHandle
         Vector3 position = packet.ReadVector3();
         Quaternion rotation = packet.ReadQuaternion();
 
-        GameManager.Instance.SpawnPlayer(id, username, position, rotation);
+        GameManager.Instance.InitPlayer(id, username, position, rotation);
     }
 
     public static void PlayerPosition(Packet packet)

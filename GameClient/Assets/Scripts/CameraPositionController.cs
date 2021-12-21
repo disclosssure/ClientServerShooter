@@ -18,6 +18,7 @@ public class CameraPositionController : MonoBehaviour
     private void OnDisable()
     {
         ClientHandle.OnCameraPositionChanged -= HandleOnCameraPositionChanged;
+        IsInited = false;
     }
 
     private void HandleOnCameraPositionChanged(Vector3 position)

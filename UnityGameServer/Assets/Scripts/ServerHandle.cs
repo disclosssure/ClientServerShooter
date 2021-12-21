@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class ServerHandle
 {
+    public static Action<int, string> OnWelcomeReceived;
+    public static Action<int, bool[], Vector3> OnPlayerInputChanged;
+
     public static void WelcomeReceived(int fromClient, Packet packet)
     {
         int clientId = packet.ReadInt();
@@ -13,7 +17,7 @@ public class ServerHandle
             Debug.Log($"Player \"{username}\" (ID: {fromClient}) has assumed the wrong client ID ({clientId})!");
         }
 
-        Server.Clients[fromClient].SendIntoGame(username);
+        OnWelcomeReceived?.Invoke(fromClient, username);
     }
 
     public static void PlayerMovement(int fromClient, Packet packet)
@@ -24,7 +28,7 @@ public class ServerHandle
             inputs[i] = packet.ReadBool();
         }
         var mousePosition = packet.ReadVector3();
-
-        Server.Clients[fromClient].Player.HandleInput(inputs, mousePosition);
+        
+        OnPlayerInputChanged?.Invoke(fromClient, inputs, mousePosition);
     }
 }

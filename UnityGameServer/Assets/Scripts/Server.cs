@@ -24,12 +24,21 @@ public class Server
 
             InitServerData();
             InitTcpListener();
+            
+            ServerHandle.OnWelcomeReceived += HandleOnWelcomeReceived;
         }
-        
+
+        private static void HandleOnWelcomeReceived(int fromClient, string username)
+        {
+            Clients[fromClient].SendIntoGame(username);
+        }
+
         public static void Stop()
         {
             _tcpListener.Stop();
             _udpListener.Close();
+            
+            ServerHandle.OnWelcomeReceived -= HandleOnWelcomeReceived;
         }
 
         private static void InitTcpListener()
@@ -38,7 +47,7 @@ public class Server
 
             _tcpListener = new TcpListener(IPAddress.Any, Port);
             _tcpListener.Start();
-            _tcpListener.BeginAcceptTcpClient(new AsyncCallback(TcpConnectCallback), null);
+            _tcpListener.BeginAcceptTcpClient(TcpConnectCallback, null);
 
             _udpListener = new UdpClient(Port);
             _udpListener.BeginReceive(UdpReceiveCallback, null);
@@ -48,7 +57,7 @@ public class Server
             void TcpConnectCallback(IAsyncResult result)
             {
                 TcpClient client = _tcpListener.EndAcceptTcpClient(result);
-                _tcpListener.BeginAcceptTcpClient(new AsyncCallback(TcpConnectCallback), null);
+                _tcpListener.BeginAcceptTcpClient(TcpConnectCallback, null);
                 Debug.Log($"Incoming connection from {client.Client.RemoteEndPoint}...");
 
                 for (int i = 1; i <= MaxPlayers; i++)
@@ -134,6 +143,6 @@ public class Server
                 { (int)ClientPackets.PlayerMovement, ServerHandle.PlayerMovement },
             };
             
-            Debug.Log("Initialize packets.");
+            Debug.Log("Packets initialized.");
         }
 }

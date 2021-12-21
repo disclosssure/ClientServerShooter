@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class ClientModel : MonoBehaviour
 {
     public int Id => _id;
     public string Username => _username;

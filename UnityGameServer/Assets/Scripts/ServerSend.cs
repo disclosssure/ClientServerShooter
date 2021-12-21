@@ -15,14 +15,14 @@ public class ServerSend
 
     #region UDP
 
-    public static void SpawnPlayer(int toClient, Player player)
+    public static void SpawnPlayer(int toClient, PlayerModel playerModel)
     {
         using (Packet packet = new Packet((int)ServerPackets.PlayerSpawn))
         {
-            packet.Write(player.Id);
-            packet.Write(player.Username);
-            packet.Write(player.transform.position);
-            packet.Write(player.transform.rotation);
+            packet.Write(playerModel.Id);
+            packet.Write(playerModel.Username);
+            packet.Write(playerModel.transform.position);
+            packet.Write(playerModel.transform.rotation);
 
             SendTcpData(toClient, packet);
         }
@@ -86,23 +86,23 @@ public class ServerSend
 
     #endregion
 
-    public static void PlayerPosition(Player player)
+    public static void PlayerPosition(PlayerMovementController playerMovementController)
     {
         using (Packet packet = new Packet((int)ServerPackets.PlayerPosition))
         {
-            packet.Write(player.Id);
-            packet.Write(player.transform.position);
+            packet.Write(playerMovementController.Id);
+            packet.Write(playerMovementController.transform.position);
 
             SendUdpDataToAll(packet);
         }
     }
 
-    public static void PlayerRotation(Player player)
+    public static void PlayerRotation(PlayerMovementController playerMovementController)
     {
         using (Packet packet = new Packet((int)ServerPackets.PlayerRotation))
         {
-            packet.Write(player.Id);
-            packet.Write(player.transform.rotation);
+            packet.Write(playerMovementController.Id);
+            packet.Write(playerMovementController.transform.rotation);
 
             SendUdpDataToAll(packet);
         }

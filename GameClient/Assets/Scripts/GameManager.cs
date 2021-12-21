@@ -4,11 +4,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    
+    [SerializeField] private PlayerSpawner _playerSpawner;
 
-    [SerializeField] private GameObject _localPlayerPrefab;
-    [SerializeField] private GameObject _playerPrefab;
-
-    public static readonly Dictionary<int, PlayerManager> Players = new Dictionary<int, PlayerManager>();
+    public static readonly Dictionary<int, ClientModel> Players = new Dictionary<int, ClientModel>();
 
     private void Awake()
     {
@@ -23,13 +22,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SpawnPlayer(int id, string username, Vector3 position, Quaternion rotation)
+    public void InitPlayer(int id, string username, Vector3 position, Quaternion rotation)
     {
-        GameObject prefab = id == Client.Instance.Id ? _localPlayerPrefab : _playerPrefab;
+        bool isLocalPlayer = id == Client.Instance.Id;
+        GameObject player = _playerSpawner.SpawnPlayer(position, rotation, isLocalPlayer);
 
-        GameObject player = Instantiate(prefab, position, rotation);
-
-        var playerManager = player.GetComponent<PlayerManager>();
+        var playerManager = player.GetComponent<ClientModel>();
         if (playerManager)
         {
             playerManager.Init(id, username);

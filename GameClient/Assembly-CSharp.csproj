@@ -54,7 +54,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\ClientHandle.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\PlayerManager.cs" />
+     <Compile Include="Assets\Scripts\ClientModel.cs" />
      <Compile Include="Assets\Scripts\ThreadManager.cs" />
      <Compile Include="Assets\Scripts\PlayerInputReader.cs" />
      <Compile Include="Assets\Scripts\Packet.cs" />
@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\ClientSend.cs" />
      <Compile Include="Assets\Scripts\CameraPositionController.cs" />
      <Compile Include="Assets\Scripts\Client.cs" />
+     <Compile Include="Assets\Scripts\PlayerSpawner.cs" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

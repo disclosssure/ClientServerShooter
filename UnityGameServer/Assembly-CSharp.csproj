@@ -54,15 +54,17 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\ServerSend.cs" />
      <Compile Include="Assets\Scripts\Client.cs" />
-     <Compile Include="Assets\Scripts\Player.cs" />
-     <Compile Include="Assets\Scripts\NetworkManager.cs" />
+     <Compile Include="Assets\Scripts\PlayerMovementController.cs" />
+     <Compile Include="Assets\Scripts\ServerManager.cs" />
      <Compile Include="Assets\Scripts\ThreadManager.cs" />
      <Compile Include="Assets\Scripts\ServerHandle.cs" />
      <Compile Include="Assets\Scripts\CameraPositionController.cs" />
      <Compile Include="Assets\Scripts\Constants.cs" />
      <Compile Include="Assets\Scripts\Server.cs" />
-     <Compile Include="Assets\Scripts\Packet.cs" />
      <Compile Include="Assets\Scripts\SpawnManager.cs" />
+     <Compile Include="Assets\Scripts\Packet.cs" />
+     <Compile Include="Assets\Scripts\PlayerModel.cs" />
+     <Compile Include="Assets\Scripts\PlayerSpawner.cs" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
