@@ -52,19 +52,36 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\ServerSend.cs" />
-     <Compile Include="Assets\Scripts\Client.cs" />
-     <Compile Include="Assets\Scripts\PlayerMovementController.cs" />
-     <Compile Include="Assets\Scripts\ServerManager.cs" />
+     <Compile Include="Assets\Scripts\ObjectPooling\Pool.cs" />
+     <Compile Include="Assets\Scripts\Network\ServerSend.cs" />
+     <Compile Include="Assets\Scripts\Network\Client.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerModel.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerMovementController.cs" />
+     <Compile Include="Assets\Scripts\ObjectPooling\BulletPooler.cs" />
+     <Compile Include="Assets\Scripts\Network\ServerManager.cs" />
      <Compile Include="Assets\Scripts\ThreadManager.cs" />
-     <Compile Include="Assets\Scripts\ServerHandle.cs" />
-     <Compile Include="Assets\Scripts\CameraPositionController.cs" />
-     <Compile Include="Assets\Scripts\Constants.cs" />
-     <Compile Include="Assets\Scripts\Server.cs" />
-     <Compile Include="Assets\Scripts\SpawnManager.cs" />
-     <Compile Include="Assets\Scripts\Packet.cs" />
-     <Compile Include="Assets\Scripts\PlayerModel.cs" />
+     <Compile Include="Assets\Scripts\Network\ServerHandle.cs" />
+     <Compile Include="Assets\Scripts\Bullet.cs" />
      <Compile Include="Assets\Scripts\PlayerSpawner.cs" />
+     <Compile Include="Assets\Scripts\Player\CameraPositionController.cs" />
+     <Compile Include="Assets\Scripts\Player\Player.cs" />
+     <Compile Include="Assets\Scripts\Constants.cs" />
+     <Compile Include="Assets\Scripts\ObjectPooling\ObjectPooler.cs" />
+     <Compile Include="Assets\Scripts\Network\Server.cs" />
+     <Compile Include="Assets\Scripts\SpawnManager.cs" />
+     <Compile Include="Assets\Scripts\Network\Packet.cs" />
+     <Compile Include="Assets\Scripts\Network\BulletSpawner.cs" />
+     <Compile Include="Assets\Scripts\Weapon\IDamageable.cs" />
+     <Compile Include="Assets\Scripts\NonDestroyableObstacle.cs" />
+     <Compile Include="Assets\Scripts\Weapon\IHealth.cs" />
+     <Compile Include="Assets\Scripts\Weapon\IDestroyable.cs" />
+     <Compile Include="Assets\Scripts\Boosters\Booster.cs" />
+     <Compile Include="Assets\Scripts\Boosters\SpeedBooster.cs" />
+     <Compile Include="Assets\PositionProvider.cs" />
+     <Compile Include="Assets\SpawnPoint.cs" />
+     <Compile Include="Assets\BoosterSpawner.cs" />
+     <Compile Include="Assets\AliveCreature.cs" />
+     <Compile Include="Assets\Scripts\Boosters\HealthBooster.cs" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

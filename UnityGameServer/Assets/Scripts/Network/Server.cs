@@ -141,6 +141,7 @@ public class Server
             {
                 { (int)ClientPackets.WelcomeReceived, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.PlayerMovement, ServerHandle.PlayerMovement },
+                { (int)ClientPackets.PlayerShoot, ServerHandle.PlayerShoot },
             };
             
             Debug.Log("Packets initialized.");

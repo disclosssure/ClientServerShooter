@@ -9,6 +9,8 @@ public class PlayerMovementController : MonoBehaviour
     
     [Header("Player Model")]
     [SerializeField] private PlayerModel _playerModel;
+
+    public float Speed => _speed;
     
     public int Id => _playerModel.Id;
 
@@ -59,7 +61,12 @@ public class PlayerMovementController : MonoBehaviour
         Move(direction.normalized);
         Rotate();
     }
-    
+
+    public void AdjustSpeed(float value)
+    {
+        _speed += value;
+    }
+
     private void Move(Vector2 direction)
     {
         _rb.MovePosition(transform.position + (Vector3)direction * _speed * Time.fixedDeltaTime);

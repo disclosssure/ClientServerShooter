@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerInputReader : MonoBehaviour
 {
-    [SerializeField] private Camera _camera;
+    private Camera _camera;
 
     private void Awake()
     {

@@ -5,6 +5,7 @@ public class ServerHandle
 {
     public static Action<int, string> OnWelcomeReceived;
     public static Action<int, bool[], Vector3> OnPlayerInputChanged;
+    public static Action<Vector3, Quaternion> OnPlayerShoot;
 
     public static void WelcomeReceived(int fromClient, Packet packet)
     {
@@ -30,5 +31,13 @@ public class ServerHandle
         var mousePosition = packet.ReadVector3();
         
         OnPlayerInputChanged?.Invoke(fromClient, inputs, mousePosition);
+    }
+
+    public static void PlayerShoot(int fromClient, Packet packet)
+    {
+        Vector3 position = packet.ReadVector3();
+        Quaternion rotation = packet.ReadQuaternion();
+        
+        OnPlayerShoot?.Invoke(position, rotation);
     }
 }

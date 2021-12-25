@@ -12,12 +12,18 @@ public enum ServerPackets
     PlayerRotation = 4,
     PlayerDisconnected = 5,
     CameraPosition = 6,
+    BulletSpawn = 7,
+    BulletPosition = 8,
+    BulletDestroy = 9,
+    BoosterSpawn = 10,
+    BoosterUse = 11,
 }
 
 public enum ClientPackets
 {
     WelcomeReceived = 1,
     PlayerMovement = 2,
+    PlayerShoot = 3,
 }
 
 public class Packet : IDisposable

@@ -38,4 +38,15 @@ public class ClientSend
             SendUdpData(packet);
         }
     }
+
+    public static void PlayerShoot(Vector3 position, Quaternion rotation)
+    {
+        using (Packet packet = new Packet((int)ClientPackets.PlayerShoot))
+        {
+            packet.Write(position);
+            packet.Write(rotation);
+            
+            SendTcpData(packet);
+        }
+    }
 }

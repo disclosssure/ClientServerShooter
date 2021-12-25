@@ -1,3 +1,4 @@
+using Boosters;
 using UnityEngine;
 
 public class ServerSend
@@ -124,6 +125,59 @@ public class ServerSend
             packet.Write(playerId);
             packet.Write(position);
             SendUdpData(playerId, packet);
+        }
+    }
+
+    public static void SpawnBullet(int bulletId, Vector3 position, Quaternion rotation)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.BulletSpawn))
+        {
+            packet.Write(bulletId);
+            packet.Write(position);
+            packet.Write(rotation);
+            SendTcpDataToAll(packet);
+        }
+    }
+
+    public static void BulletPosition(int bulletId, Vector3 position)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.BulletPosition))
+        {
+            packet.Write(bulletId);
+            packet.Write(position);
+            SendUdpDataToAll(packet);
+        }
+    }
+
+    public static void BulletDestroy(int bulletId)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.BulletDestroy))
+        {
+            packet.Write(bulletId);
+            SendTcpDataToAll(packet);
+        }
+    }
+
+    public static void BoosterSpawn(int boosterId, BoosterType boosterType, Vector3 position, Quaternion rotation)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.BoosterSpawn))
+        {
+            packet.Write(boosterId);
+            packet.Write((int)boosterType);
+            packet.Write(position);
+            packet.Write(rotation);
+            
+            SendTcpDataToAll(packet);
+        }
+    }
+
+    public static void BoosterUse(int boosterId)
+    {
+        using (Packet packet = new Packet((int)ServerPackets.BoosterUse))
+        {
+            packet.Write(boosterId);
+            
+            SendTcpDataToAll(packet);
         }
     }
 }
